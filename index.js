@@ -1,6 +1,11 @@
 const express = require('express');
+const { dbconnection } = require('./database/config');
 
 const app = express();
+
+//iniciando base de datos
+dbconnection();
+
 
 //rutas
 app.get('/', (req, res)=> {
