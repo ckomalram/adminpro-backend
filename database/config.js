@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
-
+require('dotenv').config();
 
 const dbconnection = async () => {
+    console.log(process.env.DBCONN  );
 
     try {
         await mongoose.connect(
-            'mongodb+srv://adminpro:adminpro@cluster0.4azzpsj.mongodb.net/hospitaldb'    
+            process.env.DBCONFIG  
         );
 
         console.log('Conexión Exitosa!');

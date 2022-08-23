@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const { dbconnection } = require('./database/config');
 
 const app = express();
@@ -19,6 +20,6 @@ app.get('/', (req, res)=> {
 
 
 
-app.listen(3000, () => {
-    console.log('Servidor corriendo en puerto 3000');
+app.listen(process.env.port, () => {
+    console.log(`Servidor corriendo en puerto ${process.env.port}`);
 });
