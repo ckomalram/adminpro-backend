@@ -1,0 +1,16 @@
+{
+  "name": "04-backend-serve",
+  "version": "1.0.0",
+  "description": "Curso de angular avanzado angular 14",
+  "main": "index.js",
+  "scripts": {
+    "start-dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19"
+  }
+}
