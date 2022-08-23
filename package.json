@@ -4,7 +4,7 @@
   "description": "Curso de angular avanzado angular 14",
   "main": "index.js",
   "scripts": {
-    "start-dev": "nodemon index.js"
+    "start:dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
