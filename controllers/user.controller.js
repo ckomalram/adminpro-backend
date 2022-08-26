@@ -1,4 +1,5 @@
 const { response } = require("express");
+const { validationResult } = require("express-validator");
 const User = require("../models/user.model");
 
 const getUsers = async (req, res) => {
@@ -12,14 +13,21 @@ const getUsers = async (req, res) => {
 const createUser = async (req, res = response) => {
   console.log(req.body);
   const { email, password, name } = req.body;
-  try {
+  const errorsValidation = validationResult(req);
 
-    const existEmail = await User.findOne({email});
+  if (!errorsValidation.isEmpty()) {
+    return res.status(400).json({
+      ok: false,
+      errores: errorsValidation.mapped(),
+    });
+  }
+  try {
+    const existEmail = await User.findOne({ email });
     if (existEmail) {
-        return res.status(400).json({
-            ok: false,
-            msg: 'Correo ya registrado en otro usuario.'
-        })
+      return res.status(400).json({
+        ok: false,
+        msg: "Correo ya registrado en otro usuario.",
+      });
     }
     const user = new User(req.body);
     await user.save();
