@@ -59,9 +59,9 @@ const updateUser = async (req, res = response) => {
     }
 
     //actualizaciones
-    const {password, google,email,  ...campos} = req.body;
+    const { password, google, email, ...campos } = req.body;
     if (userDb.email !== email) {
-       const existEmail = await User.findOne({ email });
+      const existEmail = await User.findOne({ email });
       if (existEmail) {
         return res.status(400).json({
           ok: false,
@@ -70,7 +70,7 @@ const updateUser = async (req, res = response) => {
       }
     }
 
-    campos.email= email;
+    campos.email = email;
     const userActualizado = await User.findByIdAndUpdate(uid, campos, {
       new: true,
     });
@@ -87,4 +87,32 @@ const updateUser = async (req, res = response) => {
   }
 };
 
-module.exports = { getUsers, createUser, updateUser };
+const deleteUser = async (req, res = response) => {
+  //TODO: Construirlo con activo/desactivo indexado.
+  const uid = req.params.id;
+
+  try {
+    const userDb = await User.findById(uid);
+
+    if (!userDb) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Usuario no encontrado.",
+      });
+    }
+
+    await User.findByIdAndDelete(uid);
+    res.status(200).json({
+      ok: true,
+      msg: `Usuario ${uid} eliminado.`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar Logs",
+    });
+  }
+};
+
+module.exports = { getUsers, createUser, updateUser, deleteUser };

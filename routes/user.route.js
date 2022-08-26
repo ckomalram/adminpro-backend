@@ -3,7 +3,7 @@ const { check } = require("express-validator");
 const {
   getUsers,
   createUser,
-  updateUser,
+  updateUser,deleteUser
 } = require("../controllers/user.controller");
 const { validarCampos } = require("../middlewares/validar-campos");
 
@@ -29,6 +29,11 @@ router.put(
     validarCampos,
   ],
   updateUser
+);
+
+router.delete(
+  "/:id", 
+  deleteUser
 );
 
 module.exports = router;
