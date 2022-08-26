@@ -43,4 +43,52 @@ const createUser = async (req, res = response) => {
   }
 };
 
-module.exports = { getUsers, createUser };
+const updateUser = async (req, res = response) => {
+  //TODO: Validar token y comprobar si el usuario es correcto.
+
+  const uid = req.params.id;
+
+  try {
+    const userDb = await User.findById(uid);
+
+    if (!userDb) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Usuario no encontrado.",
+      });
+    }
+
+    //actualizaciones
+    const campos = req.body;
+    if (userDb.email === req.body.email) {
+      delete campos.email;
+    } else {
+      const existEmail = await User.findOne({ email: req.body.email });
+      if (existEmail) {
+        return res.status(400).json({
+          ok: false,
+          msg: "Correo ya registrado en otro usuario.",
+        });
+      }
+    }
+
+    delete campos.password;
+    delete campos.google;
+
+    const userActualizado = await User.findByIdAndUpdate(uid, campos, {
+      new: true,
+    });
+    res.json({
+      ok: true,
+      user: userActualizado,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar Logs",
+    });
+  }
+};
+
+module.exports = { getUsers, createUser, updateUser };

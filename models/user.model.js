@@ -32,7 +32,7 @@ const UserSchema = Schema({
 //Esto es para fines visuales
 // no afecta el campo en la base de datos.
 UserSchema.method('toJSON', function () {
-  const{__v, _id, ...object} = this.toObject();
+  const{__v, _id,password, ...object} = this.toObject();
   object.uid = _id;
   return object;
 });
