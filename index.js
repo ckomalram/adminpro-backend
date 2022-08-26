@@ -13,16 +13,15 @@ app.use(cors())
 
 
 //rutas
+app.use('/api/users', require('./routes/user.route'));
+
+
 app.get('/', (req, res)=> {
     res.json({
         ok: true,
-        msg: 'Hola Carlyle'
+        msg: 'Hola Carlyle desde raiz'
     })
 });
-
-
-
-
 
 app.listen(process.env.port, () => {
     console.log(`Servidor corriendo en puerto ${process.env.port}`);
