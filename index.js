@@ -11,6 +11,8 @@ dbconnection();
 // configurar cors
 app.use(cors())
 
+//Leer body
+app.use(express.json());
 
 //rutas
 app.use('/api/users', require('./routes/user.route'));
