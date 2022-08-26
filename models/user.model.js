@@ -28,4 +28,13 @@ const UserSchema = Schema({
   },
 });
 
+//Para sobreescribir/ quitar un valor del schema
+//Esto es para fines visuales
+// no afecta el campo en la base de datos.
+UserSchema.method('toJSON', function () {
+  const{__v, _id, ...object} = this.toObject();
+  object.uid = _id;
+  return object;
+});
+
 module.exports = model('user', UserSchema);
