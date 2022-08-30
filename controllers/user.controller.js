@@ -4,10 +4,12 @@ const User = require("../models/user.model");
 const {generarJwt} = require('../helpers/jwt');
 
 const getUsers = async (req, res) => {
+  
   const users = await User.find({}, "name email role google");
   res.json({
     ok: true,
     users,
+    uid: req.uid
   });
 };
 
