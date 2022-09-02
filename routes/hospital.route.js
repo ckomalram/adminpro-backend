@@ -13,7 +13,11 @@ const { validarJwt } = require("../middlewares/validar-jwt");
 const router = Router();
 
 router.get("/", getHospitals);
-router.post("/", [], createHospital);
+router.post("/", [
+  validarJwt,
+  check("name", "El nombre de hospital es obligatorio").not().isEmpty(),
+  validarCampos
+], createHospital);
 router.put("/:id", [], updateHospital);
 
 router.delete("/:id", deleteHospital);
