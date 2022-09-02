@@ -16,6 +16,8 @@ app.use(express.json());
 
 //rutas
 app.use('/api/users', require('./routes/user.route'));
+app.use('/api/hospital', require('./routes/hospital.route'));
+app.use('/api/medico', require('./routes/medico.route'));
 app.use('/api/login', require('./routes/auth.route'));
 
 
