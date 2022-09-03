@@ -18,6 +18,7 @@ app.use(express.json());
 app.use('/api/users', require('./routes/user.route'));
 app.use('/api/hospital', require('./routes/hospital.route'));
 app.use('/api/medico', require('./routes/medico.route'));
+app.use('/api/generalsearch', require('./routes/generalsearch.route'));
 app.use('/api/login', require('./routes/auth.route'));
 
 
