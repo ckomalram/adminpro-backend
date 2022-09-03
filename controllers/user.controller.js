@@ -1,15 +1,30 @@
 const { response } = require("express");
 const bcryptjs = require("bcryptjs");
 const User = require("../models/user.model");
-const {generarJwt} = require('../helpers/jwt');
+const { generarJwt } = require("../helpers/jwt");
 
 const getUsers = async (req, res) => {
-  
-  const users = await User.find({}, "name email role google");
+  const vfrom = Number(req.query.from) || 0;
+  const vlimit = Number(req.query.limit) || 5;
+  // console.log(vfrom);
+  // const users = await User
+  // .find({}, "name email role google")
+  // .skip(vfrom)
+  // .limit(5);
+
+  // const totalUsers = await User.count();
+
+  //Ejecutar promesas simultaneas.
+  const [users, totalUsers] = await Promise.all([
+    await User.find({}, "name email role google").skip(vfrom).limit(vlimit),
+    await User.count(),
+  ]);
+
   res.json({
     ok: true,
     users,
-    uid: req.uid
+    uid: req.uid,
+    totalUsers,
   });
 };
 
@@ -38,11 +53,10 @@ const createUser = async (req, res = response) => {
     // _id o id : mongo va saber.
     const token = await generarJwt(user._id);
 
-
     res.json({
       ok: true,
       user: user,
-      token
+      token,
     });
   } catch (error) {
     console.log(error);
