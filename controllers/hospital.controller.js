@@ -4,29 +4,26 @@ const Hospital = require("../models/hospital.model");
 const { generarJwt } = require("../helpers/jwt");
 
 const getHospitals = async (req, res = response) => {
-  //   const hospital = await Hospital.find({}, "name img user");
+  const hospital = await Hospital.find({}, "name img user");
   res.json({
     ok: true,
     mgs: "Get Hospital",
+    hospital,
   });
 };
 
 const createHospital = async (req, res = response) => {
-
   const uid = req.uid;
-  const hospital = new Hospital(
-    {
-      user: uid,
-      ...req.body
-    }
-  );
-
+  const hospital = new Hospital({
+    user: uid,
+    ...req.body,
+  });
 
   try {
     const hospitalDb = await hospital.save();
     res.json({
       ok: true,
-      hospitalDb
+      hospitalDb,
     });
   } catch (error) {
     console.log(error);
