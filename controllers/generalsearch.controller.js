@@ -38,4 +38,45 @@ const getGeneralSearch = async (req, res) => {
   });
 };
 
-module.exports = { getGeneralSearch };
+const searchByCollection = async (req, res) => {
+  const valor = req.params.valor;
+  const vtable = req.params.table;
+  const regExp = new RegExp(valor, "i");
+
+  let data = [];
+  switch (vtable) {
+    case "users":
+      data = await User.find({
+        name: regExp,
+      });
+      
+
+      break;
+    case "hospitals":
+      data = await Hospital.find({
+        name: regExp,
+      }).populate('user', 'name img');
+
+      break;
+
+    case "medicos":
+      data = await Medico.find({
+        name: regExp,
+      }).populate('user', 'name img')
+      .populate('hospital', 'name img');
+      break;
+
+    default:
+      return res.status(400).json({
+        ok: false,
+        msg: "La tabla tiene que ser Usuarios, Medicos, Hospitales",
+      });
+  }
+
+  res.status(200).json({
+    ok: true,
+    resultados: data,
+  });
+};
+
+module.exports = { getGeneralSearch, searchByCollection };
