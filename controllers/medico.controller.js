@@ -4,7 +4,9 @@ const Medico = require("../models/medico.model");
 const { generarJwt } = require("../helpers/jwt");
 
 const getMedicos = async (req, res = response) => {
-  const medicos = await Medico.find({}, "name img user hospital");
+  const medicos = await Medico.find()
+    .populate("user", "name img email")
+    .populate("hospital", "name img");
   res.json({
     ok: true,
     mgs: "Get Medico",

@@ -4,11 +4,11 @@ const Hospital = require("../models/hospital.model");
 const { generarJwt } = require("../helpers/jwt");
 
 const getHospitals = async (req, res = response) => {
-  const hospital = await Hospital.find({}, "name img user");
+  const hospitales = await Hospital.find().populate('user' , 'name img email')
   res.json({
     ok: true,
-    mgs: "Get Hospital",
-    hospital,
+    msg: "Get Hospital",
+    hospitales,
   });
 };
 
