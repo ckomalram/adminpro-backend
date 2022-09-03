@@ -69,7 +69,7 @@ const searchByCollection = async (req, res) => {
     default:
       return res.status(400).json({
         ok: false,
-        msg: "La tabla tiene que ser Usuarios, Medicos, Hospitales",
+        msg: "La tabla tiene que ser users, medicos, hospitals",
       });
   }
 
