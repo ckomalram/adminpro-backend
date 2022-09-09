@@ -1,5 +1,8 @@
+const path = require("path");
+const fs = require("fs");
 const { response } = require("express");
 const bcryptjs = require("bcryptjs");
+
 const { generarJwt } = require("../helpers/jwt");
 const { v4: uuidv4 } = require("uuid");
 const { updatePhoto } = require("../helpers/updatePhoto");
@@ -68,4 +71,19 @@ const fileUpload = async (req, res = response) => {
   });
 };
 
-module.exports = { fileUpload };
+const obtenerImagen = (req, res = response) => {
+  const tipo = req.params.tipo;
+  const foto = req.params.foto;
+
+  const pathImg = path.join(__dirname, `../uploads/${tipo}/${foto}`);
+
+  //imagen por defecto
+  if (fs.existsSync(pathImg)) {
+    res.sendFile(pathImg);
+  } else {
+    const pathImg = path.join(__dirname, `../uploads/no-img.jpg`);
+    res.sendFile(pathImg);
+  }
+};
+
+module.exports = { fileUpload, obtenerImagen };
