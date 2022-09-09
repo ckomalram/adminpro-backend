@@ -2,6 +2,7 @@ const { response } = require("express");
 const bcryptjs = require("bcryptjs");
 const { generarJwt } = require("../helpers/jwt");
 const { v4: uuidv4 } = require("uuid");
+const { updatePhoto } = require("../helpers/updatePhoto");
 
 const fileUpload = async (req, res = response) => {
   const tipo = req.params.tipo;
@@ -51,9 +52,12 @@ const fileUpload = async (req, res = response) => {
       console.log(err);
       return res.status(500).json({
         ok: false,
-        msg: 'Error al mover la imagen',
+        msg: "Error al mover la imagen",
       });
     }
+
+    //Actualizar file en base de datos
+    updatePhoto(tipo, id, nombreArchivo);
 
     res.status(200).json({
       ok: true,
