@@ -16,8 +16,9 @@ const getUsers = async (req, res) => {
 
   //Ejecutar promesas simultaneas.
   const [users, totalUsers] = await Promise.all([
-    await User.find({}, "name email role google").skip(vfrom).limit(vlimit),
+    await User.find({}, "name img email role google").skip(vfrom).limit(vlimit),
     await User.count(),
+    // await User.countDocuments(),
   ]);
 
   res.json({
