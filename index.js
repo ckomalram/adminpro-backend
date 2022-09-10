@@ -11,6 +11,9 @@ dbconnection();
 // configurar cors
 app.use(cors())
 
+// carpeta public - mostrar
+app.use(express.static('public'));
+
 //Leer body
 app.use(express.json());
 

@@ -1,7 +1,8 @@
 const { response } = require("express");
 const Usuario = require("../models/user.model");
 const bcryptjs = require("bcryptjs");
-const {generarJwt} = require('../helpers/jwt');
+const { generarJwt } = require("../helpers/jwt");
+const { googleVerify } = require("../helpers/google-jwt-verify");
 
 const login = async (req, res = response) => {
   const { email, password } = req.body;
@@ -31,7 +32,29 @@ const login = async (req, res = response) => {
 
     res.json({
       ok: true,
-      token
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar Logs",
+    });
+  }
+};
+
+//google Sign-In
+const loginWithGoogle = async (req, res = response) => {
+  try {
+    // const googleUser = await  googleVerify(req.body.token);
+    const { email, name, picture } = await googleVerify(req.body.token);
+
+    res.status(201).json({
+      ok: true,
+      msg: "Ingreso de Token al backend exitoso.",
+      email,
+      name,
+      picture,
     });
   } catch (error) {
     console.log(error);
@@ -44,4 +67,5 @@ const login = async (req, res = response) => {
 
 module.exports = {
   login,
+  loginWithGoogle,
 };
