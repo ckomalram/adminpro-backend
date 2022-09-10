@@ -49,12 +49,37 @@ const loginWithGoogle = async (req, res = response) => {
     // const googleUser = await  googleVerify(req.body.token);
     const { email, name, picture } = await googleVerify(req.body.token);
 
+    const userDB = await Usuario.findOne({email});
+    let user;
+
+    if (!userDB) {
+      user=new Usuario({
+        name,
+        email, 
+        password: '@@@',
+        img: picture,
+        google: true
+      });
+    }else{
+      user= userDB
+      user.google = true;
+    }
+
+    //guardar usuario
+    await user.save();
+
+    //Generar Token - JWT
+    // _id o id : mongo va saber.
+    const token = await generarJwt(user._id);
+
+
     res.status(201).json({
       ok: true,
       msg: "Ingreso de Token al backend exitoso.",
       email,
       name,
       picture,
+      token
     });
   } catch (error) {
     console.log(error);
