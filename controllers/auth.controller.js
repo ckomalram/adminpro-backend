@@ -90,7 +90,24 @@ const loginWithGoogle = async (req, res = response) => {
   }
 };
 
+//renovar token
+const renewToken = async (req, res = response) => {
+
+  const uid = req.uid
+    //Generar Token - JWT
+    // _id o id : mongo va saber.
+    const token = await generarJwt(uid);
+
+
+  res.status(200).json({
+    ok: true,
+    msg: "Renovando Token",
+    token
+    });
+}
+
+
 module.exports = {
   login,
-  loginWithGoogle,
+  loginWithGoogle,renewToken
 };
