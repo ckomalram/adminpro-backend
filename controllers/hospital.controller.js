@@ -4,7 +4,7 @@ const Hospital = require("../models/hospital.model");
 const { generarJwt } = require("../helpers/jwt");
 
 const getHospitals = async (req, res = response) => {
-  const hospitales = await Hospital.find().populate('user' , 'name img email')
+  const hospitales = await Hospital.find().populate("user", "name img email");
   res.json({
     ok: true,
     msg: "Get Hospital",
@@ -35,17 +35,69 @@ const createHospital = async (req, res = response) => {
 };
 
 const updateHospital = async (req, res = response) => {
-  res.json({
-    ok: true,
-    mgs: "updateHospital",
-  });
+  try {
+    const id = req.params.id;
+    const uid = req.uid;
+    const hospitalDB = await Hospital.findById(id);
+
+    if (!hospitalDB) {
+      return res.status(404).json({
+        ok: false,
+        mgs: "Hospital no encontrado.",
+      });
+    }
+
+    const cambiosHospital = {
+      ...req.body,
+      user: uid,
+    };
+
+    const hospitalActualizado = await Hospital.findByIdAndUpdate(
+      id,
+      cambiosHospital,
+      { new: true }
+    );
+
+    res.json({
+      ok: true,
+      mgs: "updateHospital",
+      hospital: hospitalActualizado,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar Logs",
+    });
+  }
 };
 
 const deleteHospital = async (req, res = response) => {
-  res.json({
-    ok: true,
-    mgs: " deleteHospital",
-  });
+  const id = req.params.id;
+
+  try {
+    const hospitalDB = await Hospital.findById(id);
+
+    if (!hospitalDB) {
+      return res.status(404).json({
+        ok: false,
+        mgs: "Hospital no encontrado.",
+      });
+    }
+
+    await Hospital.findByIdAndDelete(id);
+
+    res.json({
+      ok: true,
+      mgs: "deleteHospital",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Error inesperado, revisar Logs",
+    });
+  }
 };
 
 module.exports = {
