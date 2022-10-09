@@ -98,11 +98,16 @@ const renewToken = async (req, res = response) => {
     // _id o id : mongo va saber.
     const token = await generarJwt(uid);
 
+    //Obtener el usuario por uid.
+    const userDB = await Usuario.findById(uid);
+
+
 
   res.status(200).json({
     ok: true,
     msg: "Renovando Token",
-    token
+    token,
+    user: userDB
     });
 }
 
